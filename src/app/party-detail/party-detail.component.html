@@ -1,0 +1,81 @@
+<div class="px-5 pt-3">
+  <div class="d-flex align-items-center">
+    <button class="icon-btn" (click)="onBackClick()">
+      <mat-icon class="back-icon">keyboard_arrow_left</mat-icon>
+    </button>
+    <h2 class="p-2">Patry Details</h2>
+  </div>
+  <div class="row w-100 m-0" *ngIf="partyDetail">
+    <div class="col-md-4">
+      <mat-card>
+        <mat-card-content>
+          <div><h2>Personal Detail</h2></div>
+          <div class="d-flex justify-content-between py-2">
+            <div>
+              <mat-slide-toggle
+                color="primary"
+                [(ngModel)]="partyDetail.is_active"
+                >Is Active ?</mat-slide-toggle
+              >
+            </div>
+            <div>
+              <mat-slide-toggle
+                [(ngModel)]="partyDetail.apply_tds"
+                color="primary"
+                >Apply TDS</mat-slide-toggle
+              >
+            </div>
+          </div>
+          <div>Name : {{ partyDetail.name }}</div>
+          <div>Company Name : {{ partyDetail.company_name }}</div>
+          <div>Email : {{ partyDetail.email }}</div>
+          <div>
+            Mobile No. :
+            {{ partyDetail.mobile_no + "," + partyDetail.telephone_no }}
+          </div>
+          <div>Date of Birth :{{ partyDetail.date_of_birth }}</div>
+          <div>Pan No. : {{ partyDetail.pan_no }}</div>
+          <div>Anniversary Date : {{ partyDetail.anniversary_date }}</div>
+          <div *ngIf="!partyDetail">No data availabel</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-4">
+      <mat-card>
+        <mat-card-content>
+          <div><h2>Address Detail</h2></div>
+          <div *ngFor="let address of partyDetail?.address">
+            <div>
+              Address :
+              {{ address.address_line_1 + " , " + address.address_line_2 }}
+            </div>
+            <div>Country : {{ address.country }}</div>
+            <div>State : {{ address.state }}</div>
+            <div>City : {{ address.city }}</div>
+            <div>Pincode : {{ address.pincode }}</div>
+            <br />
+          </div>
+          <div *ngIf="partyDetail.address.length == 0">No data availabel</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-4">
+      <mat-card>
+        <mat-card-content>
+          <div><h2>Bank Detail</h2></div>
+          <div *ngFor="let bankDetail of partyDetail?.bank_id">
+            <div>
+              Account Holder Name : {{ bankDetail.account_holder_name }}
+            </div>
+            <div>Account No. : {{ bankDetail.account_no }}</div>
+            <div>IFSC Code : {{ bankDetail.bank_ifsc_code }}</div>
+            <div>Bank Name : {{ bankDetail.bank_name }}</div>
+            <div>Branch Name : {{ bankDetail.branch_name }}</div>
+            <br />
+          </div>
+          <div *ngIf="partyDetail.bank_id.length == 0">No data availabel</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
