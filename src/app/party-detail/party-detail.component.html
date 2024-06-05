@@ -6,7 +6,7 @@
     <h2 class="p-2">Patry Details</h2>
   </div>
   <div class="row w-100 m-0" *ngIf="partyDetail">
-    <div class="col-md-4">
+    <div class="col-md-4 py-3">
       <mat-card>
         <mat-card-content>
           <div><h2>Personal Detail</h2></div>
@@ -36,11 +36,14 @@
           <div>Date of Birth :{{ partyDetail.date_of_birth }}</div>
           <div>Pan No. : {{ partyDetail.pan_no }}</div>
           <div>Anniversary Date : {{ partyDetail.anniversary_date }}</div>
+          <div>Gstin : {{ partyDetail.gstin }}</div>
+          <div>Image : {{ partyDetail.image }}</div>
+
           <div *ngIf="!partyDetail">No data availabel</div>
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 py-3">
       <mat-card>
         <mat-card-content>
           <div><h2>Address Detail</h2></div>
@@ -55,11 +58,11 @@
             <div>Pincode : {{ address.pincode }}</div>
             <br />
           </div>
-          <div *ngIf="partyDetail.address.length == 0">No data availabel</div>
+          <div *ngIf="!partyDetail.address">No data availabel</div>
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 py-3">
       <mat-card>
         <mat-card-content>
           <div><h2>Bank Detail</h2></div>
@@ -73,7 +76,7 @@
             <div>Branch Name : {{ bankDetail.branch_name }}</div>
             <br />
           </div>
-          <div *ngIf="partyDetail.bank_id.length == 0">No data availabel</div>
+          <div *ngIf="!partyDetail?.bank_id">No data availabel</div>
         </mat-card-content>
       </mat-card>
     </div>

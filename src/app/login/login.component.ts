@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 export class LoginComponent implements OnInit {
   hide = true;
   loginForm!: FormGroup;
+  showLoader = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -32,6 +33,7 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginClick() {
+    this.showLoader = true;
     let body = new FormData();
     body.append('username', this.loginForm.value.username);
     body.append('password', this.loginForm.value.password);
@@ -41,6 +43,7 @@ export class LoginComponent implements OnInit {
       .post(environment.baseurl + 'login/', body)
       .subscribe((res: any) => {
         console.log('res', res);
+        this.showLoader = false;
         localStorage.setItem('auth', JSON.stringify(res));
         localStorage.setItem('token', JSON.stringify(res?.token));
 

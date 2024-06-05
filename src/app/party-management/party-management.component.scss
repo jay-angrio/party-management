@@ -6,3 +6,13 @@ table {
   background: none !important;
   border: 0px;
 }
+
+@media screen and (max-width: 480px) {
+  .px-5 {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+  h2 {
+    font-size: 22px;
+  }
+}

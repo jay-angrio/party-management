@@ -50,13 +50,20 @@
         </div>
         <div>
           <button
-            [disabled]="loginForm.invalid"
+            [disabled]="loginForm.invalid || showLoader"
             class="w-100"
             mat-flat-button
             color="primary"
             (click)="onLoginClick()"
           >
-            Login
+            <div
+              class="d-flex align-items-center justify-content-center"
+              *ngIf="showLoader"
+            >
+              <span class="spinner-border" aria-hidden="true"></span>
+            </div>
+
+            <span *ngIf="!showLoader">Login </span>
           </button>
         </div>
       </form>

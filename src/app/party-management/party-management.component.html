@@ -1,60 +1,74 @@
-<div class="d-flex justify-content-between px-5 pt-3">
-  <div><h2>Party Management System</h2></div>
-  <div>
-    <button mat-flat-button color="primary" (click)="onLogoutClick()">
-      <mat-icon>power_settings_new</mat-icon>
-    </button>
+<div>
+  <div *ngIf="!showLoader">
+    <div class="d-flex justify-content-between px-5 pt-3">
+      <div><h2>Party Management System</h2></div>
+      <div>
+        <button mat-flat-button color="primary" (click)="onLogoutClick()">
+          <mat-icon>power_settings_new</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="text-end px-5 pt-3">
+      <button mat-flat-button color="primary" (click)="onAddPartyClick()">
+        Add Party
+      </button>
+    </div>
+
+    <div class="px-5 pt-3 table-responsive">
+      <mat-card>
+        <mat-card-content>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Phone No.</th>
+                <th scope="col">Email</th>
+                <th scope="col">Company Name</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+                <th scope="col">View</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let list of tableData; let i = index">
+                <th style="padding-top: 20px" scope="row">{{ list.name }}</th>
+                <td style="padding-top: 10px" scope="row">
+                  {{ list.mobile_no }}
+                </td>
+                <td style="padding-top: 10px" scope="row">{{ list.email }}</td>
+                <td style="padding-top: 10px" scope="row">
+                  {{ list.company_name }}
+                </td>
+
+                <td>
+                  <button class="icon-btn" (click)="onEditClick(list?.id)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </td>
+                <td>
+                  <button class="icon-btn" (click)="onDeleteClick(list?.id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+                <td>
+                  <button class="icon-btn" (click)="onViewClick(list?.id)">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
-</div>
 
-<div class="text-end px-5">
-  <button mat-flat-button color="primary" (click)="onAddPartyClick()">
-    Add Party
-  </button>
-</div>
-
-<div class="px-5 pt-3">
-  <mat-card>
-    <mat-card-content>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Phone No.</th>
-            <th scope="col">Email</th>
-            <th scope="col">Company Name</th>
-            <th scope="col">Update</th>
-            <th scope="col">Delete</th>
-            <th scope="col">View</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let list of tableData; let i = index">
-            <th style="padding-top: 20px" scope="row">{{ list.name }}</th>
-            <td style="padding-top: 10px" scope="row">{{ list.mobile_no }}</td>
-            <td style="padding-top: 10px" scope="row">{{ list.email }}</td>
-            <td style="padding-top: 10px" scope="row">
-              {{ list.company_name }}
-            </td>
-
-            <td>
-              <button class="icon-btn" (click)="onEditClick(list?.id)">
-                <mat-icon>edit</mat-icon>
-              </button>
-            </td>
-            <td>
-              <button class="icon-btn" (click)="onDeleteClick(list?.id)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </td>
-            <td>
-              <button class="icon-btn" (click)="onViewClick(list?.id)">
-                <mat-icon>visibility</mat-icon>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </mat-card-content>
-  </mat-card>
+  <div
+    style="margin-top: 20%"
+    class="w-100 h-100 d-flex align-items-center justify-content-center"
+    *ngIf="showLoader"
+  >
+    <mat-spinner></mat-spinner>
+  </div>
 </div>

@@ -1,18 +1,18 @@
 export interface partyDetails {
   name: String;
   company_name: String;
-  credit_limit: Number;
-  date_of_birth: Number;
+  credit_limit: String;
+  date_of_birth: String;
   email: String;
-  gstin: Number;
+  gstin: String;
   image: any;
   is_active: Boolean;
   login_access: Boolean;
-  mobile_no: Number;
+  mobile_no: String;
   pan_no: String;
   remark: String;
-  telephone_no: Number;
-  anniversary_date: Number;
+  telephone_no: String;
+  anniversary_date: String;
   apply_tds: Boolean;
   address: addressData[];
   bank_id: bankData[];
@@ -23,14 +23,13 @@ export interface addressData {
   address_line_2: String;
   city: String;
   country: String;
-  id: Number;
-  pincode: Number;
+  pincode: String;
   state: String;
 }
 
 export interface bankData {
   account_holder_name: String;
-  account_no: Number;
+  account_no: String;
   bank_ifsc_code: String;
   bank_name: String;
   branch_name: String;

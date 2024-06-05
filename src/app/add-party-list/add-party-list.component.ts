@@ -9,6 +9,7 @@ import {
 } from '@angular/material/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { partyDetails } from '../modal/interface';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -29,35 +30,66 @@ export const MY_DATE_FORMATS = {
   providers: [DatePipe],
 })
 export class AddPartyListComponent implements OnInit {
-  id: any;
-  name!: string;
-  company_name!: string;
-  mobile_no!: number;
-  email!: string;
-  apply_tds: boolean = true;
-  credit_limit!: number;
-  image!: any;
+  showLoader = false;
+  id: any = '';
+  partyDetailForm!: FormGroup;
+  addressesArray: any[] = [];
+  banksArray: any[] = [];
+  user: any;
+  address: any;
+  fileName: any = '';
+  file: any = '';
+  base64Image: string | null = null;
+  getAddressArray: any[] = [];
+  partyDetails: partyDetails = {
+    name: '',
+    company_name: '',
+    credit_limit: '',
+    date_of_birth: '',
+    email: '',
+    gstin: '',
+    image: '',
+    is_active: false,
+    login_access: true,
+    mobile_no: '',
+    pan_no: '',
+    remark: '',
+    telephone_no: '',
+    anniversary_date: '',
+    apply_tds: false,
+    address: [
+      {
+        address_line_1: '',
+        address_line_2: '',
+        city: '',
+        country: '',
+        pincode: '',
+        state: '',
+      },
+    ],
+    bank_id: [
+      {
+        account_holder_name: '',
+        account_no: '',
+        bank_ifsc_code: '',
+        bank_name: '',
+        branch_name: '',
+      },
+    ],
+  };
+  apply_tds: boolean = false;
   address_line_1!: string;
   address_line_2!: string;
   country!: string;
   state!: string;
   city!: string;
-  pincode!: number;
-  bank_ifsc_code!: string;
+  pincode!: string;
+  account_holder_name!: string;
+  account_no!: string;
   bank_name!: string;
   branch_name!: string;
-  account_no!: string;
-  account_holder_name!: string;
-  telephone_no!: number;
-  whatsapp_no!: number;
-  date_of_birth!: number;
-  anniversary_date!: number;
-  remark!: string;
-  pan_no!: string;
-  gstin!: number;
-  partyDetailForm!: FormGroup;
-  addressesArray: any[] = [];
-  banksArray: any[] = [];
+  bank_ifsc_code!: string;
+  isEditMode!: boolean;
 
   constructor(
     private location: Location,
@@ -70,8 +102,9 @@ export class AddPartyListComponent implements OnInit {
   ngOnInit(): void {
     let paramsId = this.aroute.queryParamMap.subscribe((res: any) => {
       this.id = res?.params;
+      this.isEditMode = !!this.id;
     });
-    this.getParyById();
+    this.getPartyById();
 
     this.partyDetailForm = this.fb.group({
       name: ['', Validators.required],
@@ -87,66 +120,75 @@ export class AddPartyListComponent implements OnInit {
       gstin: ['', Validators.required],
       date_of_birth: ['', Validators.required],
       anniversary_date: ['', Validators.required],
-      apply_tds: [Boolean, Validators.required],
-
-      addresses: this.fb.array([]), // Initialize empty form array
-      banks: this.fb.array([]),
+      apply_tds: [false, Validators.required],
     });
 
     this.addAddress();
     this.addBank();
+    this.getPartyDetail(this.user);
   }
 
   addAddress() {
-    this.addressesArray.push(this.createAddressFormGroup());
-  }
-
-  createAddressFormGroup(): FormGroup {
-    return this.fb.group({
-      address_line_1: [''],
-      address_line_2: [''],
-      country: [''],
-      state: [''],
-      city: [''],
-      pincode: [''],
+    if (!this.partyDetails.address) {
+      this.partyDetails.address = [];
+    }
+    this.partyDetails.address.push({
+      address_line_1: '',
+      address_line_2: '',
+      country: '',
+      state: '',
+      city: '',
+      pincode: '',
     });
-  }
-
-  getAddressesValues(): any[] {
-    return this.addressesArray.map((addressGroup) => addressGroup.value);
   }
 
   addBank() {
-    this.banksArray.push(this.createBankFormGroup());
-  }
-
-  createBankFormGroup(): FormGroup {
-    return this.fb.group({
-      name: [''],
-      bank_ifsc_code: [''],
-      bank_name: [''],
-      branch_name: [''],
-      account_no: [''],
-      account_holder_name: [''],
+    if (!this.partyDetails.bank_id) {
+      this.partyDetails.bank_id = [];
+    }
+    this.partyDetails.bank_id.push({
+      bank_ifsc_code: '',
+      bank_name: '',
+      branch_name: '',
+      account_no: '',
+      account_holder_name: '',
     });
   }
 
-  getBankValue(): any[] {
-    return this.banksArray.map((bankGroup) => bankGroup.value);
+  onAddressDelete(index: any) {
+    if (this.partyDetails.address.length > 0) {
+      this.partyDetails.address.splice(index, 1);
+    }
+  }
+
+  onBankDelete(index: any) {
+    if (this.partyDetails.bank_id.length > 0) {
+      this.partyDetails.bank_id.splice(index, 1);
+    }
   }
 
   onBackClick() {
     this.location.back();
   }
 
-  onSaveClick() {
-    console.log(
-      'value',
-      this.partyDetailForm.value,
-      this.getAddressesValues(),
-      this.getBankValue()
-    );
+  onFileSelected(event: any) {
+    const input = event.target as HTMLInputElement;
 
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.fileName = file.name;
+
+      this.uploadFile(file);
+    }
+  }
+
+  uploadFile(file: File): void {
+    this.file = file;
+    console.log('file type', this.file.type);
+  }
+
+  onSaveClick() {
+    this.showLoader = true;
     const birthDateValue = this.partyDetailForm.get('date_of_birth')?.value;
     const birthDateFormat = this.datePipe.transform(
       birthDateValue,
@@ -158,11 +200,9 @@ export class AddPartyListComponent implements OnInit {
       this.partyDetailForm.get('anniversary_date')?.value;
     const anniversaryhDateFormat = this.datePipe.transform(
       anniversaryDateValue,
-      'yyyy-mm-dd'
+      'YYYY-MM-dd'
     );
     const anniverayDate = anniversaryhDateFormat;
-
-    console.log('date', anniverayDate);
 
     const body = new FormData();
     body.append('name', this.partyDetailForm.value.name);
@@ -172,46 +212,76 @@ export class AddPartyListComponent implements OnInit {
     body.append('whatsapp_no', this.partyDetailForm.value.whatsapp_no);
     body.append('email', this.partyDetailForm.value.email);
     body.append('credit_limit', this.partyDetailForm.value.credit_limit);
-    body.append('image', this.partyDetailForm.value.image);
+    body.append('file', this.file);
     body.append('remark', this.partyDetailForm.value.remark);
     body.append('pan_no', this.partyDetailForm.value.pan_no);
-    body.append('date_of_birth', JSON.stringify(birthDate) as string);
-    body.append('anniversary_date', JSON.stringify(anniverayDate) as string);
-    body.append('apply_tds', this.partyDetailForm.value.apply_tds);
+    body.append('date_of_birth', birthDate as string);
+    body.append('anniversary_date', anniverayDate as string);
+    body.append('apply_tds', JSON.stringify(this.apply_tds));
     body.append('gstin', this.partyDetailForm.value.gstin);
 
-    const bankValue = this.getBankValue();
+    const bankValue = this.partyDetails.bank_id;
 
     body.append('bank', JSON.stringify(bankValue));
 
-    const addressValue = this.getAddressesValues();
+    const addressValue = this.partyDetails.address;
 
     body.append('address', JSON.stringify(addressValue));
 
     console.log('body', body);
-
-    this.http.post(environment.baseurl + 'party/', body).subscribe((res) => {
-      console.log('res', res);
-    });
-
-    console.log('birthDate', birthDateFormat);
+    if (this.id.id) {
+      this.http
+        .put(environment.baseurl + 'party/?id=' + this.id.id, body)
+        .subscribe((res) => {
+          console.log('res', res);
+          this.showLoader = false;
+        });
+    } else {
+      this.http.post(environment.baseurl + 'party/', body).subscribe(
+        (res: any) => {
+          console.log('res', res);
+          this.showLoader = false;
+        },
+        (error) => {
+          console.error('Error:', error);
+          this.showLoader = false;
+        }
+      );
+    }
   }
 
-  save() {
-    console.log(this.getAddressesValues());
-    console.log(this.getBankValue());
-  }
-
-  getParyById() {
+  getPartyById() {
+    this.showLoader = true;
     this.http
       .get(environment.baseurl + 'party/?id=' + this.id.id)
       .subscribe((res: any) => {
         console.log('res', res);
         this.getPartyDetail(res);
+        this.showLoader = false;
       });
+    console.log('address', this.getAddressArray);
   }
 
   getPartyDetail(user: any) {
-    this.name = user.name;
+    this.showLoader = true;
+    this.partyDetailForm.patchValue({
+      name: user.name,
+      company_name: user.company_name,
+      email: user.email,
+      mobile_no: user.mobile_no,
+      credit_limit: user.credit_limit,
+      image: user.image,
+      telephone_no: user.telephone_no,
+      whatsapp_no: user.whatsapp_no,
+      remark: user.remark,
+      pan_no: user.pan_no,
+      gstin: user.gstin,
+      date_of_birth: user.date_of_birth,
+      anniversary_date: user.anniversary_date,
+    });
+    this.apply_tds = user.apply_tds;
+    this.partyDetails.bank_id = user.bank_id;
+    this.partyDetails.address = user.address;
+    this.showLoader = false;
   }
 }

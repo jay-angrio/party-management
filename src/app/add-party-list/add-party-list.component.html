@@ -1,30 +1,30 @@
-<div class="px-5">
+<div class="px-5" *ngIf="!showLoader">
   <div class="pt-3 d-flex justify-content-between">
     <div class="d-flex align-items-center">
       <button class="icon-btn" (click)="onBackClick()">
         <mat-icon class="back-icon">keyboard_arrow_left</mat-icon>
       </button>
-      <h2 class="px-2">Add Patry Details</h2>
+      <h2 class="px-2">{{ id.id ? "Update" : "Add" }} Patry Details</h2>
     </div>
     <div>
       <button mat-flat-button color="primary" (click)="onSaveClick()">
-        Save
+        {{ id.id ? "Update" : "Add" }}
       </button>
     </div>
   </div>
   <div class="pt-3">
-    <form [formGroup]="partyDetailForm">
-      <div class="pt-3">
-        <mat-card>
-          <mat-card-content>
-            <div class="p-2 d-flex justify-content-between">
-              <div><h2>Personal Detail</h2></div>
-              <div>
-                <mat-slide-toggle color="primary" formControlName="apply_tds"
-                  >Apply TDS</mat-slide-toggle
-                >
-              </div>
+    <div class="pt-3">
+      <mat-card>
+        <mat-card-content>
+          <div class="p-2 d-flex justify-content-between">
+            <div><h2>Personal Detail</h2></div>
+            <div>
+              <mat-slide-toggle color="primary" [(ngModel)]="apply_tds"
+                >Apply TDS</mat-slide-toggle
+              >
             </div>
+          </div>
+          <form [formGroup]="partyDetailForm">
             <div class="row w-100 m-0 justify-content-between">
               <div class="col-md-4">
                 <mat-form-field appearance="outline" class="w-100">
@@ -86,11 +86,28 @@
               <div class="col-md-4">
                 <mat-label>Image</mat-label>
                 <br />
+
                 <input
                   type="file"
-                  accept=".png,  .jpg"
+                  class="file-input"
+                  accept="image/jpg, image/png"
                   formControlName="image"
+                  (change)="onFileSelected($event)"
+                  #fileUpload
                 />
+
+                <div class="file-upload">
+                  {{ fileName || "No file uploaded yet." }}
+
+                  <button
+                    mat-mini-fab
+                    color="primary"
+                    class="upload-btn"
+                    (click)="fileUpload.click()"
+                  >
+                    <mat-icon>attach_file</mat-icon>
+                  </button>
+                </div>
               </div>
             </div>
             <div class="row w-100 m-0 justify-content-between">
@@ -111,6 +128,7 @@
                   <input
                     type="number"
                     matInput
+                    formControlName="whatsapp_no"
                     placeholder="Enter Whatsapp No"
                   />
                 </mat-form-field>
@@ -135,7 +153,7 @@
                     type="text"
                     formControlName="pan_no"
                     matInput
-                    placeholder="Enter Address"
+                    placeholder="Enter Pan no"
                   />
                 </mat-form-field>
               </div>
@@ -146,7 +164,7 @@
                     type="text"
                     formControlName="gstin"
                     matInput
-                    placeholder="Enter Address"
+                    placeholder="Enter Gstin"
                   />
                 </mat-form-field>
               </div>
@@ -185,200 +203,202 @@
                 </mat-form-field>
               </div>
             </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-      <div class="pt-3">
-        <mat-card>
-          <mat-card-content>
-            <div class="p-2 d-flex">
-              <h2>Address Detail</h2>
-              <button (click)="addAddress()" class="icon-btn">
-                <mat-icon>add</mat-icon>
-              </button>
-            </div>
-            <div *ngFor="let addressGroup of addressesArray; let i = index">
-              <div [formGroup]="addressGroup">
-                <div class="row w-100 m-0 justify-content-between">
-                  <div class="col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Address Line 1</mat-label>
-                      <input
-                        type="text"
-                        formControlName="address_line_1"
-                        matInput
-                        placeholder="Enter Address"
-                      />
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Address Line 2</mat-label>
-                      <input
-                        type="text"
-                        formControlName="address_line_2"
-                        matInput
-                        placeholder="Enter Address"
-                      />
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Country</mat-label>
-                      <input
-                        type="text"
-                        formControlName="country"
-                        matInput
-                        placeholder="Enter Country"
-                      />
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div class="row w-100 m-0 justify-content-between">
-                  <div class="col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>State</mat-label>
-                      <input
-                        type="text"
-                        formControlName="state"
-                        matInput
-                        placeholder="Enter State"
-                      />
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>City</mat-label>
-                      <input
-                        type="text"
-                        formControlName="city"
-                        matInput
-                        placeholder="Enter City"
-                      />
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Pincode</mat-label>
-                      <input
-                        type="number"
-                        formControlName="pincode"
-                        matInput
-                        placeholder="Enter Pincode"
-                      />
-                    </mat-form-field>
-                  </div>
-                </div>
+    <div class="pt-3">
+      <mat-card>
+        <mat-card-content>
+          <div class="p-2 d-flex">
+            <h2>Address Detail</h2>
+            <button (click)="addAddress()" class="icon-btn">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <div
+            *ngFor="let addressGroup of partyDetails?.address; let i = index"
+          >
+            <div class="d-flex align-items-center justify-content-between px-3">
+              <div>
+                <h5>Address {{ i + 1 }}</h5>
+              </div>
+              <div>
+                <button
+                  mat-flat-button
+                  color="warn"
+                  (click)="onAddressDelete(i)"
+                >
+                  Delete
+                </button>
               </div>
             </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-
-      <div class="py-3">
-        <mat-card>
-          <mat-card-content>
-            <div class="p-2 d-flex">
-              <h2>Bank Detail</h2>
-              <button (click)="addBank()" class="icon-btn">
-                <mat-icon>add</mat-icon>
-              </button>
-            </div>
-            <div *ngFor="let bankGroup of banksArray; let i = index">
-              <div [formGroup]="bankGroup">
-                <div class="row w-100 m-0 justify-content-between">
-                  <div class="col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Account Holder Name</mat-label>
-                      <input
-                        type="text"
-                        formControlName="account_holder_name"
-                        matInput
-                        placeholder="Enter Account Holder Name"
-                      />
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Account No</mat-label>
-                      <input
-                        type="number"
-                        formControlName="account_no"
-                        matInput
-                        placeholder="Enter Account No."
-                      />
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Bank Name</mat-label>
-                      <input
-                        type="text"
-                        formControlName="bank_name"
-                        matInput
-                        placeholder="Enter Bank Name"
-                      />
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div class="row w-100 m-0 justify-content-between">
-                  <div class="col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Branch Name</mat-label>
-                      <input
-                        type="text"
-                        formControlName="branch_name"
-                        matInput
-                        placeholder="Enter Branch Name"
-                      />
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Bank IFSC Code</mat-label>
-                      <input
-                        type="text"
-                        formControlName="bank_ifsc_code"
-                        matInput
-                        placeholder="Enter Company Name"
-                      />
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-4"></div>
-                </div>
+            <div class="row w-100 m-0 justify-content-between">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Address Line 1</mat-label>
+                  <input
+                    type="text"
+                    [(ngModel)]="addressGroup.address_line_1"
+                    matInput
+                    placeholder="Enter Address"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Address Line 2</mat-label>
+                  <input
+                    type="text"
+                    [(ngModel)]="addressGroup.address_line_2"
+                    matInput
+                    placeholder="Enter Address"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Country</mat-label>
+                  <input
+                    type="text"
+                    [(ngModel)]="addressGroup.country"
+                    matInput
+                    placeholder="Enter Country"
+                  />
+                </mat-form-field>
               </div>
             </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </form>
+            <div class="row w-100 m-0 justify-content-between">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>State</mat-label>
+                  <input
+                    type="text"
+                    [(ngModel)]="addressGroup.state"
+                    matInput
+                    placeholder="Enter State"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>City</mat-label>
+                  <input
+                    type="text"
+                    [(ngModel)]="addressGroup.city"
+                    matInput
+                    placeholder="Enter City"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Pincode</mat-label>
+                  <input
+                    type="number"
+                    [(ngModel)]="addressGroup.pincode"
+                    matInput
+                    placeholder="Enter Pincode"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="py-3">
+      <mat-card>
+        <mat-card-content>
+          <div class="p-2 d-flex">
+            <h2>Bank Detail</h2>
+            <button (click)="addBank()" class="icon-btn">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <div *ngFor="let bankGroup of partyDetails?.bank_id; let i = index">
+            <div class="d-flex align-items-center justify-content-between px-3">
+              <div>
+                <h5>Bank {{ i + 1 }}</h5>
+              </div>
+              <div>
+                <button mat-flat-button color="warn" (click)="onBankDelete(i)">
+                  Delete
+                </button>
+              </div>
+            </div>
+            <div class="row w-100 m-0 justify-content-between">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Account Holder Name</mat-label>
+                  <input
+                    type="text"
+                    [(ngModel)]="bankGroup.account_holder_name"
+                    matInput
+                    placeholder="Enter Account Holder Name"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Account No</mat-label>
+                  <input
+                    type="number"
+                    [(ngModel)]="bankGroup.account_no"
+                    matInput
+                    placeholder="Enter Account No."
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Bank Name</mat-label>
+                  <input
+                    type="text"
+                    [(ngModel)]="bankGroup.bank_name"
+                    matInput
+                    placeholder="Enter Bank Name"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row w-100 m-0 justify-content-between">
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Branch Name</mat-label>
+                  <input
+                    type="text"
+                    [(ngModel)]="bankGroup.branch_name"
+                    matInput
+                    placeholder="Enter Branch Name"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Bank IFSC Code</mat-label>
+                  <input
+                    type="text"
+                    [(ngModel)]="bankGroup.bank_ifsc_code"
+                    matInput
+                    placeholder="Enter Company Name"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-md-4"></div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 </div>
 
-<!-- <div *ngFor="let addressGroup of addressesArray; let i = index">
-  <div [formGroup]="addressGroup">
-    <input formControlName="address_line_1" placeholder="Address Line 1" />
-    <input formControlName="address_line_2" placeholder="Address Line 2" />
-    <input formControlName="country" placeholder="Country" />
-    <input formControlName="state" placeholder="State" />
-    <input formControlName="city" placeholder="City" />
-    <input formControlName="pincode" placeholder="Pincode" />
-  </div>
+<div
+  class="w-100 h-100 d-flex align-items-center justify-content-center"
+  *ngIf="showLoader"
+>
+  <mat-spinner></mat-spinner>
 </div>
-<button (click)="addAddress()">Add Address</button>
-
-<br /><br />
-
-<div *ngFor="let bankGroup of banksArray; let i = index">
-  <div [formGroup]="bankGroup">
-    <input formControlName="name" placeholder="name" />
-    <input formControlName="account_holder_name" placeholder="holder name" />
-    <input formControlName="bank_name" placeholder="bank name" />
-    <input formControlName="bank_ifsc_code" placeholder="ifsc" />
-    <input formControlName="branch_name" placeholder="bank name" />
-    <input formControlName="account_no" placeholder="account no" />
-  </div>
-</div>
-<button (click)="addBank()">Add Bank</button>
-<button (click)="save()">Save Address</button> -->

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { addressData, partyDetails } from '../modal/interface';
+import { partyDetails } from '../modal/interface';
 
 @Component({
   selector: 'app-party-detail',
@@ -13,7 +13,6 @@ import { addressData, partyDetails } from '../modal/interface';
 export class PartyDetailComponent implements OnInit {
   partyId: any;
   partyDetail!: partyDetails;
-  addressDetail!: addressData[];
 
   constructor(
     private aroute: ActivatedRoute,
@@ -36,7 +35,7 @@ export class PartyDetailComponent implements OnInit {
       .subscribe((res: any) => {
         console.log('details', res);
         this.partyDetail = res;
-        this.addressDetail = res.address;
+        // this.addressDetail = res.address;
       });
   }
 

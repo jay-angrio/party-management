@@ -10,6 +10,8 @@ import { environment } from 'src/environments/environment';
 })
 export class PartyManagementComponent implements OnInit {
   tableData: any[] = [];
+  showLoader = false;
+
   constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -28,8 +30,10 @@ export class PartyManagementComponent implements OnInit {
   }
 
   getPartyDetails() {
+    this.showLoader = true;
     this.http.get(environment.baseurl + 'party/').subscribe((res: any) => {
       console.log('res', res);
+      this.showLoader = false;
       this.tableData = res;
     });
   }
