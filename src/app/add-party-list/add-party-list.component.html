@@ -7,7 +7,12 @@
       <h2 class="px-2">{{ id.id ? "Update" : "Add" }} Patry Details</h2>
     </div>
     <div>
-      <button mat-flat-button color="primary" (click)="onSaveClick()">
+      <button
+        mat-flat-button
+        color="primary"
+        [disabled]="partyDetailForm.invalid"
+        (click)="onSaveClick()"
+      >
         {{ id.id ? "Update" : "Add" }}
       </button>
     </div>
@@ -36,6 +41,15 @@
                     placeholder="Enter Name"
                   />
                 </mat-form-field>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    partyDetailForm.get('name')?.touched &&
+                    partyDetailForm.get('name')?.errors?.['required']
+                  "
+                >
+                  Name is required
+                </div>
               </div>
               <div class="col-md-4">
                 <mat-form-field appearance="outline" class="w-100">
@@ -47,6 +61,15 @@
                     placeholder="Enter Company Name"
                   />
                 </mat-form-field>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                  partyDetailForm.get('company_name')?.touched &&
+                  partyDetailForm.get('company_name')?.errors?.['required']
+                "
+                >
+                  Company name is required
+                </div>
               </div>
               <div class="col-md-4">
                 <mat-form-field appearance="outline" class="w-100">
@@ -58,6 +81,15 @@
                     placeholder="Enter Mobile no"
                   />
                 </mat-form-field>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                  partyDetailForm.get('mobile_no')?.touched &&
+                  partyDetailForm.get('mobile_no')?.errors?.['required']
+                "
+                >
+                  Mobile no is required
+                </div>
               </div>
             </div>
             <div class="row w-100 m-0 justify-content-between">
@@ -71,6 +103,15 @@
                     placeholder="Enter Email"
                   />
                 </mat-form-field>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                  partyDetailForm.get('email')?.touched &&
+                  partyDetailForm.get('email')?.errors?.['required']
+                "
+                >
+                  Email is required
+                </div>
               </div>
               <div class="col-md-4">
                 <mat-form-field appearance="outline" class="w-100">
@@ -82,6 +123,15 @@
                     placeholder="Enter Credit Limit"
                   />
                 </mat-form-field>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                  partyDetailForm.get('credit_limit')?.touched &&
+                  partyDetailForm.get('credit_limit')?.errors?.['required']
+                "
+                >
+                  Credit limit is required
+                </div>
               </div>
               <div class="col-md-4">
                 <mat-label>Image</mat-label>
@@ -95,6 +145,15 @@
                   (change)="onFileSelected($event)"
                   #fileUpload
                 />
+                <div
+                  class="text-danger"
+                  *ngIf="
+                partyDetailForm.get('image')?.touched &&
+                partyDetailForm.get('image')?.errors?.['required']
+              "
+                >
+                  Image is required
+                </div>
 
                 <div class="file-upload">
                   {{ fileName || "No file uploaded yet." }}
@@ -121,6 +180,15 @@
                     placeholder="Enter Telephone Number"
                   />
                 </mat-form-field>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                  partyDetailForm.get('telephone_no')?.touched &&
+                  partyDetailForm.get('telephone_no')?.errors?.['required']
+                "
+                >
+                  Telephone no is required
+                </div>
               </div>
               <div class="col-md-4">
                 <mat-form-field appearance="outline" class="w-100">
@@ -132,6 +200,15 @@
                     placeholder="Enter Whatsapp No"
                   />
                 </mat-form-field>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                  partyDetailForm.get('whatsapp_no')?.touched &&
+                  partyDetailForm.get('whatsapp_no')?.errors?.['required']
+                "
+                >
+                  Whatsapp no is required
+                </div>
               </div>
               <div class="col-md-4">
                 <mat-form-field appearance="outline" class="w-100">
@@ -143,6 +220,15 @@
                     placeholder="Enter remark"
                   />
                 </mat-form-field>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                  partyDetailForm.get('remark')?.touched &&
+                  partyDetailForm.get('remark')?.errors?.['required']
+                "
+                >
+                  Remark is required
+                </div>
               </div>
             </div>
             <div class="row w-100 m-0 justify-content-between">
@@ -156,6 +242,15 @@
                     placeholder="Enter Pan no"
                   />
                 </mat-form-field>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                  partyDetailForm.get('pan_no')?.touched &&
+                  partyDetailForm.get('pan_no')?.errors?.['required']
+                "
+                >
+                  Pan no is required
+                </div>
               </div>
               <div class="col-md-4">
                 <mat-form-field appearance="outline" class="w-100">
@@ -167,6 +262,15 @@
                     placeholder="Enter Gstin"
                   />
                 </mat-form-field>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                  partyDetailForm.get('Gstin')?.touched &&
+                  partyDetailForm.get('Gstin')?.errors?.['required']
+                "
+                >
+                  Gstin is required
+                </div>
               </div>
               <div class="col-md-4">
                 <mat-form-field appearance="outline" class="w-100">
@@ -183,6 +287,15 @@
                   ></mat-datepicker-toggle>
                   <mat-datepicker #dp></mat-datepicker>
                 </mat-form-field>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                  partyDetailForm.get('date_of_birth')?.touched &&
+                  partyDetailForm.get('date_of_birth')?.errors?.['required']
+                "
+                >
+                  Date of birth is required
+                </div>
               </div>
             </div>
             <div class="row w-100 m-0 justify-content-between">
@@ -201,6 +314,15 @@
                   ></mat-datepicker-toggle>
                   <mat-datepicker #datepick></mat-datepicker>
                 </mat-form-field>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                  partyDetailForm.get('anniversary_date')?.touched &&
+                  partyDetailForm.get('anniversary_date')?.errors?.['required']
+                "
+                >
+                  Anniversary date is required
+                </div>
               </div>
             </div>
           </form>

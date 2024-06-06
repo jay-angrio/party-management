@@ -120,7 +120,6 @@ export class AddPartyListComponent implements OnInit {
       gstin: ['', Validators.required],
       date_of_birth: ['', Validators.required],
       anniversary_date: ['', Validators.required],
-      apply_tds: [false, Validators.required],
     });
 
     this.addAddress();
