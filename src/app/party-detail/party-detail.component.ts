@@ -23,7 +23,6 @@ export class PartyDetailComponent implements OnInit {
   ngOnInit(): void {
     const partyId = this.aroute.queryParamMap.subscribe((res: any) => {
       this.partyId = res?.params;
-      console.log(this.partyId);
     });
 
     this.getPartyDetailById();
@@ -33,9 +32,7 @@ export class PartyDetailComponent implements OnInit {
     this.http
       .get(environment.baseurl + 'party/?id=' + this.partyId.id)
       .subscribe((res: any) => {
-        console.log('details', res);
         this.partyDetail = res;
-        // this.addressDetail = res.address;
       });
   }
 

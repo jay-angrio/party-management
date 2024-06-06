@@ -145,15 +145,6 @@
                   (change)="onFileSelected($event)"
                   #fileUpload
                 />
-                <div
-                  class="text-danger"
-                  *ngIf="
-                partyDetailForm.get('image')?.touched &&
-                partyDetailForm.get('image')?.errors?.['required']
-              "
-                >
-                  Image is required
-                </div>
 
                 <div class="file-upload">
                   {{ fileName || "No file uploaded yet." }}

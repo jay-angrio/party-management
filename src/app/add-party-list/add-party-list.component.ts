@@ -112,7 +112,7 @@ export class AddPartyListComponent implements OnInit {
       email: ['', Validators.required],
       mobile_no: ['', Validators.required],
       credit_limit: ['', Validators.required],
-      image: ['', Validators.required],
+      image: [''],
       telephone_no: ['', Validators.required],
       whatsapp_no: ['', Validators.required],
       remark: ['', Validators.required],
@@ -183,7 +183,6 @@ export class AddPartyListComponent implements OnInit {
 
   uploadFile(file: File): void {
     this.file = file;
-    console.log('file type', this.file.type);
   }
 
   onSaveClick() {
@@ -227,18 +226,15 @@ export class AddPartyListComponent implements OnInit {
 
     body.append('address', JSON.stringify(addressValue));
 
-    console.log('body', body);
     if (this.id.id) {
       this.http
         .put(environment.baseurl + 'party/?id=' + this.id.id, body)
         .subscribe((res) => {
-          console.log('res', res);
           this.showLoader = false;
         });
     } else {
       this.http.post(environment.baseurl + 'party/', body).subscribe(
         (res: any) => {
-          console.log('res', res);
           this.showLoader = false;
         },
         (error) => {
@@ -254,11 +250,9 @@ export class AddPartyListComponent implements OnInit {
     this.http
       .get(environment.baseurl + 'party/?id=' + this.id.id)
       .subscribe((res: any) => {
-        console.log('res', res);
         this.getPartyDetail(res);
         this.showLoader = false;
       });
-    console.log('address', this.getAddressArray);
   }
 
   getPartyDetail(user: any) {

@@ -58,7 +58,7 @@
             <div>Pincode : {{ address.pincode }}</div>
             <br />
           </div>
-          <div *ngIf="!partyDetail.address">No data availabel</div>
+          <div *ngIf="!partyDetail.address.length">No data availabel</div>
         </mat-card-content>
       </mat-card>
     </div>
@@ -76,7 +76,7 @@
             <div>Branch Name : {{ bankDetail.branch_name }}</div>
             <br />
           </div>
-          <div *ngIf="!partyDetail?.bank_id">No data availabel</div>
+          <div *ngIf="!partyDetail?.bank_id?.length">No data availabel</div>
         </mat-card-content>
       </mat-card>
     </div>

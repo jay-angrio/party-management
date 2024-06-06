@@ -38,11 +38,9 @@ export class LoginComponent implements OnInit {
     body.append('username', this.loginForm.value.username);
     body.append('password', this.loginForm.value.password);
 
-    console.log('Login Form :', this.loginForm);
     this.http
       .post(environment.baseurl + 'login/', body)
       .subscribe((res: any) => {
-        console.log('res', res);
         this.showLoader = false;
         localStorage.setItem('auth', JSON.stringify(res));
         localStorage.setItem('token', JSON.stringify(res?.token));

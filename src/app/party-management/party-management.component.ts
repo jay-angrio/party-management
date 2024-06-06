@@ -21,7 +21,6 @@ export class PartyManagementComponent implements OnInit {
   onLogoutClick() {
     if (confirm('Are you sure')) {
       this.http.post(environment.baseurl + 'logout/', null).subscribe((res) => {
-        console.log(res);
         localStorage.removeItem('auth');
         localStorage.removeItem('token');
         this.router.navigate(['/']);
@@ -32,7 +31,6 @@ export class PartyManagementComponent implements OnInit {
   getPartyDetails() {
     this.showLoader = true;
     this.http.get(environment.baseurl + 'party/').subscribe((res: any) => {
-      console.log('res', res);
       this.showLoader = false;
       this.tableData = res;
     });
@@ -47,7 +45,6 @@ export class PartyManagementComponent implements OnInit {
       this.http
         .delete(environment.baseurl + 'party/?id=' + id)
         .subscribe((res) => {
-          console.log('res', res);
           location.reload();
         });
     }
